@@ -1,5 +1,7 @@
 # go-useragent
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/medama-io/go-useragent.svg)](https://pkg.go.dev/github.com/medama-io/go-useragent)
+
 `go-useragent` is a high-performance zero-allocation Go library designed to parse browser name and version, operating system, and device type information from user-agent strings with _sub-microsecond_ parsing times.
 
 It achieves this efficiency by using a modified hybrid [trie](https://en.wikipedia.org/wiki/Trie) data structure to store and rapidly look up user-agent tokens. It utilizes heuristic rules, tokenizing a list of user-agent strings into a trie during startup. During runtime, the parsing process involves a straightforward lookup operation.
@@ -27,28 +29,37 @@ import (
 )
 
 func main() {
-    // Create a new parser. Initialize only once during application startup.
-    ua := useragent.NewParser()
+	// Create a new parser. Initialize only once during application startup.
+	ua := useragent.NewParser()
 
-    // Example user-agent string.
-    str := "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
+	// Example user-agent string.
+	str := "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
 
-    // Parse the user-agent string.
-    agent := ua.Parse(str)
+	// Parse the user-agent string.
+	agent := ua.Parse(str)
 
-    // Access parsed information using agent fields.
-    fmt.Println(agent.GetBrowser())  // Chrome
-    fmt.Println(agent.GetVersion())  // 118.0.0.0
-    fmt.Println(agent.GetOS())       // Windows
-    fmt.Println(agent.GetDevice())   // Desktop
-    fmt.Println(agent.IsDesktop())  // true
-    fmt.Println(agent.IsMobile())   // false
-    fmt.Println(agent.IsTablet())   // false
-    fmt.Println(agent.IsTV())       // false
-    fmt.Println(agent.IsBot())      // false
+	// Access parsed information using agent fields.
+	fmt.Println(agent.Browser())        // agents.BrowserChrome
+	fmt.Println(agent.BrowserVersion()) // 118.0.0.0
+	fmt.Println(agent.OS())             // agents.OSWindows
+	fmt.Println(agent.Device())         // agents.DeviceDesktop
 
-    // Helper functions.
-    fmt.Println(agent.GetMajorVersion())  // 118
+	// Boolean helper functions.
+	fmt.Println(agent.IsChrome())  // true
+	fmt.Println(agent.IsFirefox()) // false
+
+	fmt.Println(agent.IsWindows()) // true
+	fmt.Println(agent.IsLinux())   // false
+
+	fmt.Println(agent.IsDesktop()) // true
+	fmt.Println(agent.IsTV())      // false
+	fmt.Println(agent.IsBot())     // false
+	// and many more...
+
+	// Version helper functions.
+	fmt.Println(agent.BrowserVersionMajor()) // 118
+	fmt.Println(agent.BrowserVersionMinor()) // 0
+	fmt.Println(agent.BrowserVersionPatch()) // 0.0
 }
 ```
 
