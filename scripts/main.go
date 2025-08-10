@@ -104,4 +104,16 @@ func main() {
 	}
 
 	fmt.Println("Cleaned agents saved to data/final.txt")
+
+	// Write the cleaned content to final.go file.
+	writeGoPath := "data/final.go"
+
+	finalStr = "package data\n\nvar FinalData = `" + finalStr + "`\n"
+	err = os.WriteFile(writeGoPath, []byte(finalStr), 0o644)
+	if err != nil {
+		fmt.Printf("Error writing cleaned agents file: %s\n", err)
+		return
+	}
+
+	fmt.Println("Cleaned agents saved to data/final.go")
 }
